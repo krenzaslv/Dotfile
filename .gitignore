@@ -1,0 +1,11 @@
+*
+
+!.gitignore
+
+
+# Vim and Nvim stuff
+!.vimrc
+!.config/nvim/init.vim
+
+#Xserver
+!.Xresources
