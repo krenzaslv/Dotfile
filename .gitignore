@@ -1,11 +1,13 @@
 *
-
 !.gitignore
 
 
 # Vim and Nvim stuff
 !.vimrc
-!.config/nvim/init.vim
+!*/.config/nvim/init.vim
 
 #Xserver
 !.Xresources
+
+#i3
+!*/.i3/config
