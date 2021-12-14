@@ -51,6 +51,9 @@ Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'navarasu/onedark.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vhdirk/vim-cmake'
+Plug 'jalcine/cmake.vim'
+
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -443,6 +446,11 @@ vnoremap K :m '<-2<CR>gv=gv
 " c
 autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
 autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
+autocmd FileType cpp let g:cmake_ycm_symlinks = true
+autocmd FileType cpp :call extend(g:ale_linters, {
+    \'python': ['clangd'], })
+autocmd FileType cpp :call extend(g:ale_fixers, {
+    \'python': ['clangd']})
 
 
 " python
@@ -454,23 +462,12 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" jedi-vim
-" let g:jedi#popup_on_dot = 0
-" let g:jedi#goto_assignments_command = "<leader>g"
-" let g:jedi#goto_definitions_command = "<leader>d"
-" let g:jedi#documentation_command = "K"
-" let g:jedi#usages_command = "<leader>n"
-" let g:jedi#rename_command = "<leader>r"
-" let g:jedi#show_call_signatures = "0"
-" let g:jedi#completions_command = "<C-Space>"
-" let g:jedi#smart_auto_mappings = 0
-
 " ale
-:call extend(g:ale_linters, {
+autocmd FileType python :call extend(g:ale_linters, {
     \'python': ['flake8', 'pylint'], })
-:call extend(g:ale_fixers, {
+autocmd FileType python :call extend(g:ale_fixers, {
     \'python': ['autoflake', 'black']})
-let g:ale_fix_on_save = 1
+autocmd FileType python let g:ale_fix_on_save = 1
 
 " Mappings for CoCList
 " Show all diagnostics.
