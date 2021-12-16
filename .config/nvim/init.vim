@@ -51,8 +51,11 @@ Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'navarasu/onedark.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vhdirk/vim-cmake'
-Plug 'jalcine/cmake.vim'
+Plug 'clangd/coc-clangd'
+Plug 'ilyachur/cmake4vim'
+Plug 'voldikss/coc-cmake'
+Plug 'puremourning/vimspector'
+" Plug 'tpope/vim-unimpaired'
 
 
 if isdirectory('/usr/local/opt/fzf')
@@ -135,6 +138,8 @@ set ignorecase
 set smartcase
 
 set fileformats=unix,dos,mac
+
+set noshowmode
 
 if exists('$SHELL')
     set shell=$SHELL
@@ -435,6 +440,21 @@ noremap <C-h> <C-w>h
 vmap < <gv
 vmap > >gv
 
+"" Smart c navigation
+nmap ]q :cn<CR>
+nmap ]q :cp<CR>
+
+"" Smart resizing of splits
+nmap          <C-W>+     <C-W>+<SID>ws
+nmap          <C-W>-     <C-W>-<SID>ws
+nmap          <C-W>>     <C-W>><SID>ws
+nmap          <C-W><     <C-W><<SID>ws
+nn <script>   <SID>ws+   <C-W>+<SID>ws
+nn <script>   <SID>ws-   <C-W>-<SID>ws
+nn <script>   <SID>ws>   <C-W>><SID>ws
+nn <script>   <SID>ws<   <C-W><<SID>ws
+nmap          <SID>ws    <Nop> 
+
 "" Move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
@@ -446,11 +466,19 @@ vnoremap K :m '<-2<CR>gv=gv
 " c
 autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
 autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp let g:cmake_ycm_symlinks = true
 autocmd FileType cpp :call extend(g:ale_linters, {
-    \'python': ['clangd'], })
+    \'cpp': ['clangtidy', 'clangd', 'ccpcheck', 'clangcheck'], })
 autocmd FileType cpp :call extend(g:ale_fixers, {
-    \'python': ['clangd']})
+    \'cpp': ['clangtidy'], })
+let g:cmake_compile_commands = 1
+let g:cmake_compile_commands_link = './'
+let g:cmake_build_type = 'RelWithDebInfo'
+" let g:cmake_cxx_compiler = '/usr/bin/clang'
+let g:make_arguments = '-j8'
+let g:cmake_vimspector_support = 1
+autocmd FileType cpp nmap <silent> <F5> <Plug>(CMakeBuild)
+autocmd FileType cpp nmap <silent> <F6> <Plug>(CMakeRun)
+autocmd FileType cpp nmap <silent> <F7> :FZFCMakeSelectTarget<CR>
 
 
 " python
@@ -495,7 +523,7 @@ endif
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-
+let g:airline_powerline_fonts = 1 
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -537,11 +565,11 @@ set nobackup
 set nowritebackup
 
 " Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=3
+set updatetime=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
