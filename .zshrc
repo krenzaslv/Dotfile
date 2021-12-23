@@ -1,4 +1,5 @@
 xinput --set-prop 13 'libinput Accel Speed' 1.0
+xset r rate 280 40
 
 export PATH=/home/dw/bin:$PATH
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
