@@ -28,6 +28,7 @@ if !filereadable(vimplug_exists)
   autocmd VimEnter * PlugInstall
 endif
 
+let g:ale_disable_lsp = 1
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
 
@@ -55,6 +56,7 @@ Plug 'clangd/coc-clangd'
 Plug 'ilyachur/cmake4vim'
 Plug 'voldikss/coc-cmake'
 Plug 'puremourning/vimspector'
+Plug 'bfrg/vim-cpp-modern'
 " Plug 'tpope/vim-unimpaired'
 
 if isdirectory('/usr/local/opt/fzf')
@@ -74,8 +76,8 @@ Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 
 "" Snippets
-" Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 "*****************************************************************************
 "" Custom bundles
@@ -84,7 +86,6 @@ Plug 'xolox/vim-session'
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 Plug 'ludwig/split-manpage.vim'
-
 
 " python
 "" Python Bundle
@@ -294,7 +295,7 @@ endif
 "" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
 augroup vimrc-sync-fromstart
   autocmd!
-  autocmd BufEnter * :syntax sync maxlines=200
+  autocmd BufEnter * :syntax sync maxlines=500
 augroup END
 
 "" Remember cursor position
@@ -381,15 +382,10 @@ nnoremap <silent> <leader>e :FZF -m<CR>
 nmap <leader>y :History:<CR>
 
 " snippets
-" let g:UltiSnipsExpandTrigger="<c-e>"
-" let g:UltiSnipsJumpForwardTrigger="<c-f>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-" let g:UltiSnipsEditSplit="vertical"
-
-" ale
-let g:ale_disable_lsp = 1
-let g:ale_linters = {}
-let g:ale_fixers = {}
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<c-h>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+let g:UltiSnipsEditSplit="vertical"
 
 set background=dark
 " Tagbar
@@ -461,14 +457,23 @@ vnoremap K :m '<-2<CR>gv=gv
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
+let g:ale_linters = {
+\   'cpp': ['clangtidy', 'cppcheck'],
+\   'c': ['clangtidy'],
+\}
+let g:ale_fixers={
+\   'cpp': ['clang-format'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
 
+let g:ale_cpp_clangtidy_checks = ['google-*,modernize-*,clang-analyzer-*, bugprone-*']
 " c
-autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp :call extend(g:ale_linters, {
-    \'cpp': ['clangtidy', 'clangd', 'ccpcheck', 'clangcheck'], })
-autocmd FileType cpp :call extend(g:ale_fixers, {
-    \'cpp': ['clangtidy'], })
+autocmd FileType c setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab
+" autocmd FileType cpp :call extend(g:ale_linters, {
+"     \'cpp': ['clangtidy', 'clangd', 'ccpcheck', 'clangcheck'], })
+" autocmd FileType cpp :call extend(g:ale_fixers, {
+"     \'cpp': ['clangtidy', 'clang-format'], })
 let g:cmake_compile_commands = 1
 let g:cmake_compile_commands_link = './'
 let g:cmake_build_type = 'RelWithDebInfo'
@@ -649,11 +654,25 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>r <Plug>(coc-rename)
+
+" Snippets
+" " Use <C-l> for trigger snippet expand.
+" imap <C-l> <Plug>(coc-snippets-expand)
+" " Use <C-j> for select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<c-j>'
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+" " Use <C-j> for both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+" " Use <leader>x for convert visual selected code to snippet
+" xmap <leader>x  <Plug>(coc-convert-snippet)
 
 " Formatting selected code.
-" xmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>l  <Plug>(coc-format-selected)
+nmap <leader>l  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
