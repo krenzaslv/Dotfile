@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 xinput --set-prop 13 "libinput Accel Speed" 1.0
-xset r rate 280 50
+xset r rate 200 120
 
 export PATH=/home/dw/bin:$PATH
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
@@ -95,6 +95,8 @@ plugins=(
     dirhistory
 )
 
+zstyle :omz:plugins:ssh-agent lifetime 1h
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -149,3 +151,11 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="/$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc

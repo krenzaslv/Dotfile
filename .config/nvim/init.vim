@@ -28,8 +28,8 @@ if !filereadable(vimplug_exists)
   autocmd VimEnter * PlugInstall
 endif
 
-let g:ale_disable_lsp = 1
-" Required:
+" let g:ale_disable_lsp = 1
+" " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
 
 "*****************************************************************************
@@ -46,7 +46,6 @@ Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
-Plug 'dense-analysis/ale'
 Plug 'Yggdroot/indentLine'
 Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
@@ -58,6 +57,7 @@ Plug 'voldikss/coc-cmake'
 Plug 'puremourning/vimspector'
 Plug 'bfrg/vim-cpp-modern'
 " Plug 'tpope/vim-unimpaired'
+" Plug 'dense-analysis/ale'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -179,7 +179,7 @@ else
 
   " IndentLine
   let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = 0
+  let g:indentLine_concealcursor = "inc" 
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
@@ -230,7 +230,7 @@ endif
 " vim-airline
 let g:airline_theme = 'onedark'
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
@@ -468,14 +468,14 @@ vnoremap K :m '<-2<CR>gv=gv
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
-let g:ale_linters = {
-\   'cpp': ['clangtidy', 'cppcheck'],
-\   'c': ['clangtidy'],
-\}
-let g:ale_fixers={
-\   'cpp': ['clang-format'],
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\}
+" let g:ale_linters = {
+" \   'cpp': ['clangtidy', 'cppcheck'],
+" \   'c': ['clangtidy'],
+" \}
+" let g:ale_fixers={
+" \   'cpp': ['clang-format'],
+" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \}
 
 let g:ale_cpp_clangtidy_checks = ['google-*,modernize-*,clang-analyzer-*, bugprone-*']
 " c
@@ -530,11 +530,11 @@ augroup vimrc-python
 augroup END
 
 " ale
-autocmd FileType python :call extend(g:ale_linters, {
-    \'python': ['flake8', 'pylint'], })
-autocmd FileType python :call extend(g:ale_fixers, {
-    \'python': ['autoflake', 'black']})
-autocmd FileType python let g:ale_fix_on_save = 1
+" autocmd FileType python :call extend(g:ale_linters, {
+"     \'python': ['flake8', 'pylint'], })
+" autocmd FileType python :call extend(g:ale_fixers, {
+"     \'python': ['autoflake', 'black']})
+" autocmd FileType python let g:ale_fix_on_save = 1
 
 " Mappings for CoCList
 " Show all diagnostics.
@@ -771,3 +771,8 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" Disable auto line break
+set formatoptions-=tc
+" Disable hiding of json doublequotes
+let conceallevel = 0 
