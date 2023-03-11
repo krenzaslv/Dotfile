@@ -51,11 +51,7 @@ Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'navarasu/onedark.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'clangd/coc-clangd'
-Plug 'ilyachur/cmake4vim'
-Plug 'voldikss/coc-cmake'
 Plug 'puremourning/vimspector'
-Plug 'bfrg/vim-cpp-modern'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'dense-analysis/ale'
 
@@ -86,6 +82,12 @@ Plug 'honza/vim-snippets'
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 Plug 'ludwig/split-manpage.vim'
+Plug 'bfrg/vim-cpp-modern'
+Plug 'clangd/coc-clangd'
+Plug 'ilyachur/cmake4vim'
+Plug 'voldikss/coc-cmake'
+
+
 
 " python
 "" Python Bundle
@@ -164,6 +166,12 @@ let no_buffers_menu=1
 colorscheme onedark 
 
 
+" Better command line completion 
+set wildmenu
+
+" mouse support
+set mouse=a
+
 set mousemodel=popup
 set t_Co=256
 set guioptions=egmrti
@@ -179,7 +187,7 @@ else
 
   " IndentLine
   let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = "inc" 
+  let g:indentLine_concealcursor = "" 
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
@@ -341,12 +349,12 @@ noremap <Leader>v :<C-u>vsplit<CR>
 "" Git
 noremap <Leader>ga :Gwrite<CR>
 noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Gpush<CR>
-noremap <Leader>gll :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
+noremap <Leader>gsh :Git push<CR>
+noremap <Leader>gll :Git pull<CR>
+noremap <Leader>gs :Git<CR>
+noremap <Leader>gb :Git blame<CR>
+noremap <Leader>gd :Gvdiffsplit<CR>
+noremap <Leader>gr :GRemove<CR>
 
 " session management
 nnoremap <leader>so :OpenSession<Space>
@@ -393,9 +401,9 @@ nnoremap <silent> <leader>e :FZF -m<CR>
 nmap <leader>y :History:<CR>
 
 " snippets
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-h>"
-let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsJumpForwardTrigger="<c-s>"
+let g:UltiSnipsJumpBackwardTrigger="<c-q>"
 let g:UltiSnipsEditSplit="vertical"
 
 set background=dark
@@ -448,7 +456,7 @@ vmap > >gv
 
 "" Smart c navigation
 nmap ]q :cn<CR>
-nmap ]q :cp<CR>
+nmap [q :cp<CR>
 
 "" Smart resizing of splits
 nmap          <C-W>+     <C-W>+<SID>ws
