@@ -57,7 +57,6 @@ Plug 'voldikss/coc-cmake'
 Plug 'puremourning/vimspector'
 " Plug 'tpope/vim-unimpaired'
 
-
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 else
@@ -476,9 +475,22 @@ let g:cmake_build_type = 'RelWithDebInfo'
 " let g:cmake_cxx_compiler = '/usr/bin/clang'
 let g:make_arguments = '-j8'
 let g:cmake_vimspector_support = 1
-autocmd FileType cpp nmap <silent> <F5> <Plug>(CMakeBuild)
-autocmd FileType cpp nmap <silent> <F6> <Plug>(CMakeRun)
-autocmd FileType cpp nmap <silent> <F7> :FZFCMakeSelectTarget<CR>
+autocmd FileType cpp nmap <silent> <leader>cb <Plug>(CMakeBuild)
+autocmd FileType cpp nmap <silent> <leader>cr <Plug>(CMakeRun)
+autocmd FileType cpp nmap <silent> <leader>ct :FZFCMakeSelectTarget<CR>
+
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools']
+nnoremap <Leader>dd :call vimspector#Launch()<CR>
+nnoremap <Leader>de :call vimspector#Reset()<CR>
+nnoremap <Leader>dc :call vimspector#Continue()<CR>
+
+nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
+
+nmap <Leader>dk <Plug>VimspectorRestart
+nmap <F8> <Plug>VimspectorStepOut
+nmap <F6> <Plug>VimspectorStepInto
+nmap <F7> <Plug>VimspectorStepOver
 
 
 " python
