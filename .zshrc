@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 xinput --set-prop 13 "libinput Accel Speed" 1.0
-xset r rate 280 40
+xset r rate 380 40
 
 export PATH=/home/dw/bin:$PATH
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
