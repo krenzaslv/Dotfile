@@ -93,6 +93,8 @@ plugins=(
     colored-man-pages
     ssh-agent
     dirhistory
+    z
+    fzf
 )
 
 zstyle :omz:plugins:ssh-agent lifetime 1h

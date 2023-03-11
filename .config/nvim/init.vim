@@ -468,23 +468,11 @@ vnoremap K :m '<-2<CR>gv=gv
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
-" let g:ale_linters = {
-" \   'cpp': ['clangtidy', 'cppcheck'],
-" \   'c': ['clangtidy'],
-" \}
-" let g:ale_fixers={
-" \   'cpp': ['clang-format'],
-" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-" \}
 
-let g:ale_cpp_clangtidy_checks = ['google-*,modernize-*,clang-analyzer-*, bugprone-*']
 " c
 autocmd FileType c setlocal tabstop=2 shiftwidth=2 expandtab
 autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab
-" autocmd FileType cpp :call extend(g:ale_linters, {
-"     \'cpp': ['clangtidy', 'clangd', 'ccpcheck', 'clangcheck'], })
-" autocmd FileType cpp :call extend(g:ale_fixers, {
-"     \'cpp': ['clangtidy', 'clang-format'], })
+
 let g:cmake_compile_commands = 1
 let g:cmake_compile_commands_link = './'
 let g:cmake_build_type = 'RelWithDebInfo'
@@ -529,22 +517,11 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" ale
-" autocmd FileType python :call extend(g:ale_linters, {
-"     \'python': ['flake8', 'pylint'], })
-" autocmd FileType python :call extend(g:ale_fixers, {
-"     \'python': ['autoflake', 'black']})
-" autocmd FileType python let g:ale_fix_on_save = 1
-
-" Mappings for CoCList
-" Show all diagnostics.
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
 let python_highlight_all = 1
-
-
 
 "*****************************************************************************
 "*****************************************************************************
@@ -626,12 +603,17 @@ endif
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
