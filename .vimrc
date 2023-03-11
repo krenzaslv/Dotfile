@@ -1,9 +1,9 @@
-" vim-bootstrap 2021-11-28 20:14:45
+" vim-bootstrap 2021-11-30 11:48:18
 
 "*****************************************************************************
 "" Vim-Plug core
 "*****************************************************************************
-let vimplug_exists=expand('~/.vim/autoload/plug.vim')
+let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 if has('win32')&&!has('win64')
   let curl_exists=expand('C:\Windows\Sysnative\curl.exe')
 else
@@ -11,8 +11,8 @@ else
 endif
 
 let g:vim_bootstrap_langs = "c,python"
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
-let g:vim_bootstrap_theme = "one"
+let g:vim_bootstrap_editor = "neovim"				" nvim or vim
+let g:vim_bootstrap_theme = "onedark"
 let g:vim_bootstrap_frams = ""
 
 if !filereadable(vimplug_exists)
@@ -28,8 +28,9 @@ if !filereadable(vimplug_exists)
   autocmd VimEnter * PlugInstall
 endif
 
+let g:ale_disable_lsp = 1
 " Required:
-call plug#begin(expand('~/.vim/plugged'))
+call plug#begin(expand('~/.config/nvim/plugged'))
 
 "*****************************************************************************
 "" Plug install packages
@@ -49,10 +50,14 @@ Plug 'dense-analysis/ale'
 Plug 'Yggdroot/indentLine'
 Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
-Plug 'rakr/vim-one'
-" Plug 'ycm-core/YouCompleteMe'
-Plug 'skywind3000/asyncrun.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'clangd/coc-clangd'
+Plug 'ilyachur/cmake4vim'
+Plug 'voldikss/coc-cmake'
+Plug 'puremourning/vimspector'
+Plug 'bfrg/vim-cpp-modern'
+" Plug 'tpope/vim-unimpaired'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -82,10 +87,9 @@ Plug 'honza/vim-snippets'
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 Plug 'ludwig/split-manpage.vim'
 
-
 " python
 "" Python Bundle
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
 
@@ -93,8 +97,8 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 "*****************************************************************************
 
 "" Include user's extra bundle
-if filereadable(expand("~/.vimrc.local.bundles"))
-  source ~/.vimrc.local.bundles
+if filereadable(expand("~/.config/nvim/local_bundles.vim"))
+  source ~/.config/nvim/local_bundles.vim
 endif
 
 call plug#end()
@@ -135,6 +139,8 @@ set smartcase
 
 set fileformats=unix,dos,mac
 
+set noshowmode
+
 if exists('$SHELL')
     set shell=$SHELL
 else
@@ -142,7 +148,7 @@ else
 endif
 
 " session management
-let g:session_directory = "~/.vim/session"
+let g:session_directory = "~/.config/nvim/session"
 let g:session_autoload = "no"
 let g:session_autosave = "no"
 let g:session_command_aliases = 1
@@ -155,10 +161,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-
-set termguicolors
-colorscheme one 
-set background=dark
+colorscheme onedark 
 
 
 set mousemodel=popup
@@ -190,7 +193,6 @@ else
   endif
   
 endif
-
 
 if &term =~ '256color'
   set t_ut=
@@ -226,7 +228,7 @@ if exists("*fugitive#statusline")
 endif
 
 " vim-airline
-let g:airline_theme = 'one'
+let g:airline_theme = 'onedark'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -293,7 +295,7 @@ endif
 "" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
 augroup vimrc-sync-fromstart
   autocmd!
-  autocmd BufEnter * :syntax sync maxlines=200
+  autocmd BufEnter * :syntax sync maxlines=500
 augroup END
 
 "" Remember cursor position
@@ -320,6 +322,17 @@ set autoread
 "*****************************************************************************
 "" Mappings
 "*****************************************************************************
+
+"" Toggle copen
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+
+nnoremap <silent> <c-c> :call ToggleQuickFix()<cr>
 
 "" Split
 noremap <Leader>h :<C-u>split<CR>
@@ -380,15 +393,12 @@ nnoremap <silent> <leader>e :FZF -m<CR>
 nmap <leader>y :History:<CR>
 
 " snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<c-h>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 let g:UltiSnipsEditSplit="vertical"
 
-" ale
-let g:ale_linters = {}
-let g:ale_fixers = {}
-
+set background=dark
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
@@ -427,29 +437,77 @@ noremap <leader>c :bd<CR>
 nnoremap <silent> <leader><space> :noh<cr>
 
 "" Switching windows
+noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
 
 "" Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
 vmap > >gv
 
+"" Smart c navigation
+nmap ]q :cn<CR>
+nmap ]q :cp<CR>
+
+"" Smart resizing of splits
+nmap          <C-W>+     <C-W>+<SID>ws
+nmap          <C-W>-     <C-W>-<SID>ws
+nmap          <C-W>>     <C-W>><SID>ws
+nmap          <C-W><     <C-W><<SID>ws
+nn <script>   <SID>ws+   <C-W>+<SID>ws
+nn <script>   <SID>ws-   <C-W>-<SID>ws
+nn <script>   <SID>ws>   <C-W>><SID>ws
+nn <script>   <SID>ws<   <C-W><<SID>ws
+nmap          <SID>ws    <Nop> 
+
 "" Move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-"" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
-
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
+let g:ale_linters = {
+\   'cpp': ['clangtidy', 'cppcheck'],
+\   'c': ['clangtidy'],
+\}
+let g:ale_fixers={
+\   'cpp': ['clang-format'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
 
+let g:ale_cpp_clangtidy_checks = ['google-*,modernize-*,clang-analyzer-*, bugprone-*']
 " c
-autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
+autocmd FileType c setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab
+" autocmd FileType cpp :call extend(g:ale_linters, {
+"     \'cpp': ['clangtidy', 'clangd', 'ccpcheck', 'clangcheck'], })
+" autocmd FileType cpp :call extend(g:ale_fixers, {
+"     \'cpp': ['clangtidy', 'clang-format'], })
+let g:cmake_compile_commands = 1
+let g:cmake_compile_commands_link = './'
+let g:cmake_build_type = 'RelWithDebInfo'
+" let g:cmake_cxx_compiler = '/usr/bin/clang'
+let g:make_arguments = '-j8'
+let g:cmake_vimspector_support = 1
+autocmd FileType cpp nmap <silent> <leader>cb <Plug>(CMakeBuild)
+autocmd FileType cpp nmap <silent> <leader>cr <Plug>(CMakeRun)
+autocmd FileType cpp nmap <silent> <leader>ct :FZFCMakeSelectTarget<CR>
+
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools']
+let g:vimspector_enable_mappings = 'HUMAN'
+nnoremap <Leader>dd :call vimspector#Launch()<CR>
+nnoremap <Leader>de :call vimspector#Reset()<CR>
+nnoremap <Leader>dc :call vimspector#Continue()<CR>
+
+nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
+
+nmap <Leader>dk <Plug>VimspectorRestart
+nmap <F8> <Plug>VimspectorStepOut
+nmap <F6> <Plug>VimspectorStepInto
+nmap <F7> <Plug>VimspectorStepOver
 
 
 " python
@@ -461,23 +519,15 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
 " ale
-:call extend(g:ale_linters, {
+autocmd FileType python :call extend(g:ale_linters, {
     \'python': ['flake8', 'pylint'], })
-:call extend(g:ale_fixers, {
+autocmd FileType python :call extend(g:ale_fixers, {
     \'python': ['autoflake', 'black']})
+autocmd FileType python let g:ale_fix_on_save = 1
 
+" Mappings for CoCList
+" Show all diagnostics.
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
 
@@ -490,8 +540,8 @@ let python_highlight_all = 1
 "*****************************************************************************
 
 "" Include user's local vim config
-if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
+if filereadable(expand("~/.config/nvim/local_init.vim"))
+  source ~/.config/nvim/local_init.vim
 endif
 
 "*****************************************************************************
@@ -502,7 +552,7 @@ endif
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-
+let g:airline_powerline_fonts = 1 
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -532,6 +582,9 @@ else
   let g:airline_symbols.branch = ''
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
+endif
+
+
 
 " This is COC configuration 
 set hidden
@@ -541,7 +594,7 @@ set nobackup
 set nowritebackup
 
 " Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -613,11 +666,25 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>r <Plug>(coc-rename)
+
+" Snippets
+" " Use <C-l> for trigger snippet expand.
+" imap <C-l> <Plug>(coc-snippets-expand)
+" " Use <C-j> for select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<c-j>'
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+" " Use <C-j> for both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+" " Use <leader>x for convert visual selected code to snippet
+" xmap <leader>x  <Plug>(coc-convert-snippet)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>l  <Plug>(coc-format-selected)
+nmap <leader>l  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -660,8 +727,8 @@ endif
 
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -694,4 +761,3 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-endif

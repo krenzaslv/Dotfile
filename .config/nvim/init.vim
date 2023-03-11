@@ -323,6 +323,17 @@ set autoread
 "" Mappings
 "*****************************************************************************
 
+"" Toggle copen
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+
+nnoremap <silent> <c-c> :call ToggleQuickFix()<cr>
+
 "" Split
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
@@ -479,6 +490,17 @@ let g:cmake_compile_commands_link = './'
 let g:cmake_build_type = 'RelWithDebInfo'
 " let g:cmake_cxx_compiler = '/usr/bin/clang'
 let g:make_arguments = '-j8'
+   let g:cmake_vimspector_default_configuration = {
+               \ 'adapter': 'vscode-cpptools',
+               \ 'configuration': {
+                   \ 'type': '',
+                   \ 'request': 'launch',
+                   \ 'cwd': '${workspaceRoot}',
+                   \ 'Mimode': 'gdb',
+                   \ 'args': [],
+                   \ 'program': ''
+                   \ }
+               \ }
 let g:cmake_vimspector_support = 1
 autocmd FileType cpp nmap <silent> <leader>cb <Plug>(CMakeBuild)
 autocmd FileType cpp nmap <silent> <leader>cr <Plug>(CMakeRun)
