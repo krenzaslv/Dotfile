@@ -11,6 +11,7 @@ xset r rate 200 120
 export PATH=/home/dw/bin:$PATH
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
 
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
