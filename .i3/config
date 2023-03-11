@@ -29,7 +29,7 @@ font xft:URWGothic-Book 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminal
+bindsym $mod+Return exec terminal 
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -186,6 +186,10 @@ assign [class="Thunderbird"] $ws8
 # assign [class="Pale moon"] $ws2
 # assign [class="Pcmanfm"] $ws3
 # assign [class="Skype"] $ws5
+
+
+for_window [title="KeePassXC"] move scratchpad 
+for_window [title="ProtonVPN"] move scratchpad 
 
 # Open specific applications in floating mode
 for_window [title="alsamixer"] floating enable border pixel 1
@@ -361,6 +365,12 @@ bindsym $mod+m bar mode toggle
 
 # client.background       #2B2C2B
 
+# Fix for huge floating windows on high dpi screen
+#floating_minimum_size 600 x 600
+#floating_maximum_size 3100 x 1200 
+
+# Screenshot
+bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
 #############################
 ### settings for i3-gaps: ###
 #############################
