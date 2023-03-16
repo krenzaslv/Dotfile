@@ -1,0 +1,25 @@
+---
+  - name: "Configuring Dotfiles"
+    hosts: localhost
+    connection: local 
+    tasks:
+
+    - name: "zshrc"
+      ansible.builtin.copy:
+        src: files/config/zsh/.zshrc
+        dest: ~/.zshrc
+
+    - name: "i3"
+      ansible.builtin.copy:
+        src: files/config/i3/config
+        dest: ~/.i3/config
+
+    - name: "i3status"
+      ansible.builtin.copy:
+        src: files/config/i3status/config
+        dest: ~/.config/i3status/config
+
+    - name: "XResouces"
+      ansible.builtin.copy:
+        src: files/config/XResources/.Xresources
+        dest: ~/.Xresources
