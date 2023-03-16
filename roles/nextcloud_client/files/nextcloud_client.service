@@ -1,0 +1,9 @@
+[Unit]
+Description=Start Nextcloud client
+
+[Service]
+ExecStart=flatpak run com.nextcloud.desktopclient.nextcloud
+ExecStop=flatpak stop com.nextcloud.desktopclient.nextcloud
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,5 @@
+- name: "Configuring Nextcloud client"
+  hosts: localhost
+  connection: local 
+  roles:
+    - nextcloud_client 

@@ -1,0 +1,7 @@
+---
+- name: Start nextcloud_client 
+  systemd:
+    name: nextcloud_client
+    state: started
+    enabled: yes
+    scope: user

@@ -1,0 +1,20 @@
+---
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: Install the nextcloud flatpak
+  community.general.flatpak:
+    name: com.nextcloud.desktopclient.nextcloud 
+    method: user
+    state: present
+
+- name: Install nextcloud user systemd
+  copy:
+    src: nextcloud_client.service
+    dest: ~/.config/systemd/user/nextcloud_client.service
+  notify:
+    - Start nextcloud_client
