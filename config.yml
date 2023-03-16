@@ -1,0 +1,5 @@
+- name: "Configuring Dotfiles"
+  hosts: localhost
+  connection: local 
+  roles:
+    - config 

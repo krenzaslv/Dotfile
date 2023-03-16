@@ -1,0 +1,24 @@
+- name: "Configuring Dotfiles"
+  hosts: localhost
+  connection: local 
+  tasks:
+
+  - name: "zshrc"
+    copy:
+      src: files/config/zsh/.zshrc
+      dest: ~/.zshrc
+
+  - name: "i3"
+    copy:
+      src: files/config/i3/config
+      dest: ~/.i3/config
+
+  - name: "i3status"
+    copy:
+      src: files/config/i3status/config
+      dest: ~/.config/i3status/config
+
+  - name: "XResouces"
+    copy:
+      src: files/config/XResources/.Xresources
+      dest: ~/.Xresources

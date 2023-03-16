@@ -1,0 +1,35 @@
+---
+- name: create direcories for namespaces
+  become: yes
+  become_user: root
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/netns
+    - "/etc/netns/{{ NETNS_NAME }}"
+
+- name: create resolv conf 
+  become: yes
+  become_user: root
+  template:
+    src: resolv.conf.j2
+    dest: "/etc/netns/{{ NETNS_NAME }}/resolv.conf"
+
+- name: create systemd file 
+  become: yes
+  become_user: root
+  template:
+    src: systemd.service.j2
+    dest: "/etc/systemd/system/netns-{{ NETNS_NAME }}.service"
+
+- name: create wireguard config file 
+  become: yes
+  become_user: root
+  copy:
+    src: "{{ NETNS_CONF_FILE }}"
+    dest: "/etc/netns/{{ NETNS_NAME }}/config"
+    mode: 0440
+    owner: root
+    group: root
+
