@@ -16,6 +16,9 @@
   template:
     src: resolv.conf.j2
     dest: "/etc/netns/{{ NETNS_NAME }}/resolv.conf"
+    group: root
+    owner: root
+    mode: 0640
 
 - name: create systemd file 
   become: yes
@@ -23,13 +26,16 @@
   template:
     src: systemd.service.j2
     dest: "/etc/systemd/system/netns-{{ NETNS_NAME }}.service"
+    mode: 0440
+    owner: root
+    group: root
 
 - name: create wireguard config file 
   become: yes
   become_user: root
   copy:
     src: "{{ NETNS_CONF_FILE }}"
-    dest: "/etc/netns/{{ NETNS_NAME }}/config"
+    dest: "/etc/wireguard/{{ NETNS_NAME }}.conf"
     mode: 0440
     owner: root
     group: root
