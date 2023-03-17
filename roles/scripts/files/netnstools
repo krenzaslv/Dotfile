@@ -1,14 +1,22 @@
 #!/bin/sh
 
+set -e
+
 usage (){
     echo "Usage: netnstools enter [NAMESPACE]"
     echo "       netnstools run [NAMESPACE] [COMMAND]"
+    echo "       netnstools firejail [NAMESPACE] [COMMAND]"
 }
 
 if [[ "$1" == "enter" ]]; then
     sudo ip netns exec $2 sudo -u  $USER bash 
+
 elif [[ "$1" == "run" ]]; then
-    sudo ip netns exec $2 sudo -u  $USER $3 
+    sudo ip netns exec $2 sudo -u  $USER $3
+
+elif [[ "$1" == "firejail" ]]; then
+    firejail --noprofile --netns=$2 $3 
+
 else
     usage
 fi

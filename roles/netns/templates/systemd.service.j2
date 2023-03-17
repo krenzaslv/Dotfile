@@ -4,6 +4,7 @@ Description=VPN Network Namespace {{ NETNS_NAME }}
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/ip netns add {{ NETNS_NAME }} 
+ExecStart=/usr/bin/ip -n {{ NETNS_NAME }} link set lo up
 ExecStart=/usr/bin/ip link add wg1 type wireguard
 ExecStart=/usr/bin/ip link set wg1 netns {{ NETNS_NAME }} 
 ExecStart=/usr/bin/ip netns exec {{ NETNS_NAME }} wg setconf wg1 /etc/wireguard/{{ NETNS_NAME }}.conf
