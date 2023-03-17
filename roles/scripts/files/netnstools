@@ -3,6 +3,7 @@
 set -e
 
 usage (){
+    echo "==== Runs an application in a Network Namespace ==="
     echo "Usage: netnstools enter [NAMESPACE]"
     echo "       netnstools run [NAMESPACE] [COMMAND]"
     echo "       netnstools firejail [NAMESPACE] [COMMAND]"
