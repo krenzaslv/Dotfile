@@ -6,6 +6,10 @@
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
+#Move workspaces between screens
+bindsym $mod+Ctrl+greater move workspace to output right
+bindsym $mod+Ctrl+less move workspace to output left
+
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
 
