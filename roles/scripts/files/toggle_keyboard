@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+a=$(setxkbmap -query)
+
+if [[ $a =~ 'us' ]]; then
+    setxkbmap ch 
+    notify-send "Setting Keyboard to CH"
+else
+    setxkbmap us
+    notify-send "Setting Keyboard to US"
+fi

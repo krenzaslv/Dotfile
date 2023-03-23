@@ -2,7 +2,7 @@
 
 - name: "zshrc"
   copy:
-    src: zsh/.zshrc
+    src: zsh/config
     dest: ~/.zshrc
 
 - name: "i3"
@@ -17,5 +17,10 @@
 
 - name: "XResouces"
   copy:
-    src: XResources/.Xresources
+    src: XResources/config
     dest: ~/.Xresources
+
+- name: "tmux"
+  copy:
+    src: tmux/config
+    dest: ~/.tmux.conf

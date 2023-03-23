@@ -1,0 +1,11 @@
+---
+
+- name: "Install Windowmanagerstuff"
+  hosts: localhost
+  connection: local 
+  tasks:
+  - name: Install i3blocks 
+    ansible.builtin.package:
+      name: i3blocks 
+      state: present 
+

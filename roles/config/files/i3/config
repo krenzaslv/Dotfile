@@ -10,6 +10,9 @@ set $mod Mod4
 bindsym $mod+Ctrl+greater move workspace to output right
 bindsym $mod+Ctrl+less move workspace to output left
 
+#Toggle keyboard layout
+bindsym $mod+t exec toggle_keyboard
+
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
 
@@ -66,7 +69,7 @@ bindsym $mod+F2 exec firefox
 bindsym $mod+F3 exec ranger
 bindsym $mod+Shift+F3 exec pcmanfm_pkexec
 bindsym $mod+F5 exec terminal -e 'mocp'
-bindsym $mod+t exec --no-startup-id pkill picom
+# bindsym $mod+t exec --no-startup-id pkill picom
 bindsym $mod+Ctrl+t exec --no-startup-id picom -b
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
 bindsym Print exec --no-startup-id i3-scrot
@@ -458,7 +461,7 @@ set $base0F #be5046
 
 # Basic bar configuration using the Base16 variables.
 bar {
-    status_command i3status
+    status_command i3blocks
 
     colors {
         background $base00
