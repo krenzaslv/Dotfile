@@ -7,10 +7,12 @@
 - name: "Battery failsave"
   hosts: localhost
   connection: local 
+  # become: yes
   tasks:
   - name: "Install battery failsave" 
     cron:
       name: "battery_failsave"
       minute: "*"
-      job: "battery_warner"
+      job: "/usr/local/bin/battery_failsave"
       state: present
+      # user: root
