@@ -3,3 +3,14 @@
   connection: local 
   roles:
     - config 
+
+- name: "Battery failsave"
+  hosts: localhost
+  connection: local 
+  tasks:
+  - name: "Install battery failsave" 
+    cron:
+      name: "battery_failsave"
+      minute: "*"
+      job: "battery_warner"
+      state: present
