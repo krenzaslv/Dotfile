@@ -7,9 +7,9 @@ fi
 
 xinput --set-prop 13 "libinput Accel Speed" 1.0
 xset r rate 200 120
+eval "$(ssh-agent -s)" 
 
 export PATH=$HOME/bin:$PATH
-export DOCKER_HOST=unix:///run/user/1000/docker.sock
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -90,7 +90,6 @@ plugins=(
     sudo
     docker
     colored-man-pages
-    ssh-agent
     dirhistory
     z
     fzf
