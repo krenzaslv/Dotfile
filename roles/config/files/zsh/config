@@ -7,7 +7,6 @@ fi
 
 xinput --set-prop 13 "libinput Accel Speed" 1.0
 xset r rate 200 120
-eval "$(ssh-agent -s)" 
 
 export PATH=$HOME/bin:$PATH
 # If you come from bash you might have to change your $PATH.
