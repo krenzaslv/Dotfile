@@ -1,6 +1,4 @@
 - name: "Copy user scripts"
-  become: yes
-  become_user: root
   ansible.posix.synchronize:
     src: files/
-    dest: /usr/local/bin/
+    dest: ~/.local/bin/

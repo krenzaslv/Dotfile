@@ -1,3 +1,4 @@
+exec mako
 exec --no-startup-id /usr/bin/nm-applet
 
 # Default config for sway
@@ -32,11 +33,21 @@ default_border pixel 1
 #smart_borders on
 #set $borderwidth 1
 hide_edge_borders both
-### Output configuration
 
+### Volume control
+bindsym XF86AudioRaiseVolume exec "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+bindsym XF86AudioLowerVolume exec "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
+bindsym XF86AudioMute exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+
+
+### Brightness control
+bindsym XF86MonBrightnessUp exec light -A 2
+bindsym XF86MonBrightnessDown exec light -U 2
 
 bindsym $mod+Shift+r restart
+bindsym $mod+c exec ~/.local/bin/toggle_keyboard
 
+### Output configuration
 # Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
 output * bg /var/home/dw/Pictures/wallpaper.jpg fill
 #
@@ -240,6 +251,6 @@ bar {
   swaybar_command waybar
   workspace_buttons yes
 }
-}
+
 
 include @sysconfdir@/sway/config.d/*

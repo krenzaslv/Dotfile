@@ -1,12 +1,10 @@
 #!/bin/bash
 
-
-a=$(setxkbmap -query)
-
-if [[ $a =~ 'us' ]]; then
-    setxkbmap ch 
+a=$(swaymsg -t get_inputs | jq '.[0].xkb_active_layout_name')
+if [[ $a =~ '"English (US)"' ]]; then
+    swaymsg input type:keyboard xkb_layout "ch"
     notify-send "Setting Keyboard to CH"
 else
-    setxkbmap us
+    swaymsg input type:keyboard xkb_layout "us"
     notify-send "Setting Keyboard to US"
 fi
