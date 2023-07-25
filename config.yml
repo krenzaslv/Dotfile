@@ -4,15 +4,15 @@
   roles:
     - config 
 
-- name: "Battery failsave"
-  hosts: localhost
-  connection: local 
+#- name: "Battery failsave"
+#  hosts: localhost
+#  connection: local 
   # become: yes
-  tasks:
-  - name: "Install battery failsave" 
-    cron:
-      name: "battery_failsave"
-      minute: "*"
-      job: "/usr/local/bin/battery_failsave"
-      state: present
-      # user: root
+#  tasks:
+#  - name: "Install battery failsave" 
+#    cron:
+#      name: "battery_failsave"
+#      minute: "*"
+#      job: "/usr/local/bin/battery_failsave"
+#      state: present
+#      # user: root
