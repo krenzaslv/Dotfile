@@ -1,5 +1,7 @@
 exec mako
-exec --no-startup-id /usr/bin/nm-applet
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id blueman-applet
 
 # Default config for sway
 #
@@ -21,7 +23,9 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu ls ~/.local/bin | dmenu -nb '#1a1b26' -nf '#565f89' -sb '#7aa2f7' | xargs swaymsg exec flatpak run --
+set $menu_k ~/.local/bin/kube dmenu | dmenu -nb '#1a1b26' -nf '#565f89' -sb '#7aa2f7'   | xargs swaymsg exec ~/.local/bin/kube
+
 #bindsym $mod+d exec --no-startup-id rofi -show run  -m -1 
 
 # i3-gaps
@@ -83,6 +87,11 @@ output * bg /var/home/dw/Pictures/wallpaper.jpg fill
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
+#
+input "type:keyboard" {
+    xkb_layout us,ch
+    xkb_options grp:alt_shift_toggle
+}
 
 input "2:7:SynPS/2_Synaptics_TouchPad" {
        dwt enabled
@@ -107,6 +116,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+Shift+d exec $menu_k
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -252,5 +262,9 @@ bar {
   workspace_buttons yes
 }
 
+# Theming
+client.focused           #9aa5ce #16161d #c0caf5 #9aa5ce   #9aa5ce
+client.focused_inactive  #16161d #16161d #c0caf5 #16161d   #16161d
+client.unfocused         #16161d #16161d #c0caf5 #16161d   #16161d
 
 include @sysconfdir@/sway/config.d/*
